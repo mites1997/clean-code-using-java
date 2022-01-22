@@ -7,8 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class GildedRoseRefactoredTest {
 
 	public static final int DEFAULT_QUALITY = 3;
-	public static final int DEFAULT_SELL_IN = 15;
+	public static final int NOT_EXPIRED_SELL_IN = 15;
 	public static final String DEFAULT_ITEM = "DEFAULT_ITEM";
+	public static final int EXPIRED_SELL_IN = -1;
+
 
 	/**
 	 * Method to test the variation in quality of the item for the non expired
@@ -22,14 +24,13 @@ public class GildedRoseRefactoredTest {
 	public void testUnexpiredDefaultItemQualityDecreasesBy1() {
 		//setup
 		String defaultItem = DEFAULT_ITEM;
-		int notExpiredSellIn = DEFAULT_SELL_IN;
+		int notExpiredSellIn = NOT_EXPIRED_SELL_IN;
 		int defaultQuality = DEFAULT_QUALITY;
 		GildedRose app = createGildedRoseWithOneItem(defaultItem, notExpiredSellIn, defaultQuality);
 		//invoke
 		app.updateQuality();
-
 		//verify
-		Item expected=new Item(DEFAULT_ITEM,DEFAULT_SELL_IN-1,DEFAULT_QUALITY-1);
+		Item expected=new Item(DEFAULT_ITEM,NOT_EXPIRED_SELL_IN-1,DEFAULT_QUALITY-1);
 		assertItem(expected, app.items[0]);
 	}
 
@@ -54,13 +55,16 @@ public class GildedRoseRefactoredTest {
 	 * 
 	 */
 	@Test
-	public void testUpdateQualityForExpiredItem() {
-		Item item = new Item("DEFAULT_ITEM", -1, 3);
-		Item[] items = new Item[] { item };
-		GildedRose app = new GildedRose(items);
+	public void testExpiredDefaultItemQualityDecreasesBy2() {
+		//setup
+		String defaultItem = DEFAULT_ITEM;
+		int expiredSellIn = EXPIRED_SELL_IN;
+		int defaultQuality = DEFAULT_QUALITY;
+		GildedRose app = createGildedRoseWithOneItem(defaultItem, expiredSellIn, defaultQuality);
+		//invoke
 		app.updateQuality();
-		assertEquals("DEFAULT_ITEM", app.items[0].name);
-		assertEquals(-2, app.items[0].sellIn);
-		assertEquals(1, app.items[0].quality);
+		//verify
+		Item expected=new Item(DEFAULT_ITEM,EXPIRED_SELL_IN-1,DEFAULT_QUALITY-2);
+		assertItem(expected, app.items[0]);
 	}
 }
