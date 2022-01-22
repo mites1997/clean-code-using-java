@@ -10,6 +10,8 @@ public class GildedRoseRefactoredTest {
 	public static final int NOT_EXPIRED_SELL_IN = 15;
 	public static final String DEFAULT_ITEM = "DEFAULT_ITEM";
 	public static final int EXPIRED_SELL_IN = -1;
+	public static final String AGED_BRIE = "Aged Brie";
+	public static final int MAXIMUM_QUALITY = 50;
 
 
 	/**
@@ -67,4 +69,34 @@ public class GildedRoseRefactoredTest {
 		Item expected=new Item(DEFAULT_ITEM,EXPIRED_SELL_IN-1,DEFAULT_QUALITY-2);
 		assertItem(expected, app.items[0]);
 	}
+
+
+	@Test
+	public void testUnexpiredAgedBrieQualityIncreasesBy1() {
+		GildedRose app = createGildedRoseWithOneItem(AGED_BRIE, NOT_EXPIRED_SELL_IN, DEFAULT_QUALITY);
+		//invoke
+		app.updateQuality();
+		//verify
+		Item expected=new Item(AGED_BRIE,NOT_EXPIRED_SELL_IN-1,DEFAULT_QUALITY+1);
+		assertItem(expected, app.items[0]);
+	}
+	@Test
+	public void testExpiredAgedBrieQualityDecreasesBy2() {
+		GildedRose app = createGildedRoseWithOneItem(AGED_BRIE, EXPIRED_SELL_IN, DEFAULT_QUALITY);
+		//invoke
+		app.updateQuality();
+		//verify
+		Item expected=new Item(AGED_BRIE,EXPIRED_SELL_IN-1,DEFAULT_QUALITY+2);
+		assertItem(expected, app.items[0]);
+	}
+	@Test
+	public void testUnExpiredAgedBrieQualityDoesNotGoBeyondMaximum() {
+		GildedRose app = createGildedRoseWithOneItem(AGED_BRIE, NOT_EXPIRED_SELL_IN, MAXIMUM_QUALITY);
+		//invoke
+		app.updateQuality();
+		//verify
+		Item expected=new Item(AGED_BRIE,NOT_EXPIRED_SELL_IN-1,MAXIMUM_QUALITY);
+		assertItem(expected, app.items[0]);
+	}
+
 }
