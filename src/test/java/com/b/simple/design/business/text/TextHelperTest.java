@@ -12,7 +12,6 @@ public class TextHelperTest {
 	TextHelper helper = new TextHelper();
 	
 	@Test
-	@Disabled
 	public void testSwapLastTwoCharacters() {
 		assertEquals("",helper.swapLastTwoCharacters(""));
 		assertEquals("A",helper.swapLastTwoCharacters("A"));
